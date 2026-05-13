@@ -423,6 +423,15 @@
 					memberSelect.appendChild(option);
 				});
 
+				const batchExportPosters = window.createPosterBatchExporter({
+					members,
+					memberSelect,
+					memberPhoto,
+					poster,
+					batchExportBtn,
+					renderMember,
+				});
+
 				async function exportSinglePoster() {
 					const currentIndex = Number(memberSelect.value);
 					const currentMember = members[currentIndex];
