@@ -140,6 +140,11 @@
 				align-items: center;
 			}
 
+			.content-message {
+				grid-column: 1 / -1;
+				margin-top: 24px;
+			}
+
 			.photo-card-wrap {
 				position: relative;
 				transform: rotate(-2deg);
@@ -274,7 +279,7 @@
 
 			.name {
 				text-align: center;
-				margin-top: 20px;
+				margin-top: 12px;
 				font-size: 48px;
 				font-weight: 900;
 				color: #f48f68;
@@ -284,7 +289,7 @@
 				display: flex;
 				flex-direction: column;
 				gap: 16px;
-				margin-top: 8px;
+				margin-top: 0px;
 			}
 
 			.label {
@@ -292,7 +297,7 @@
 				background: #ffe394;
 				padding: 6px 14px;
 				border-radius: 999px;
-				font-size: 18px;
+				font-size: 24px;
 				font-weight: 900;
 				margin-bottom: 12px;
 			}
@@ -358,14 +363,14 @@
 								<div class="value" id="memberWork">创意内容和运营执行</div>
 							</div>
 						</div>
+					</div>
 
-						<div>
-							<div class="label">想说的话</div>
-							<div class="message-wrap">
-								<div class="shadow-layer" aria-hidden="true"></div>
-								<div class="message" id="memberMessage">
-									<span>只看女足</span>
-								</div>
+					<div class="content-message">
+						<div class="label">想说什么</div>
+						<div class="message-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="message" id="memberMessage">
+								<span>只看女足</span>
 							</div>
 						</div>
 					</div>
@@ -428,23 +433,35 @@
 					memberPhoto.src = member.photo;
 					memberPhoto.alt = member.name;
 					setMemberNameWithLineSplit(member.name);
+
+					const style = window.getComputedStyle(memberName);
+					const parsedLineHeight = Number.parseFloat(style.lineHeight);
+					const fallbackLineHeight = Number.parseFloat(style.fontSize) * 1.2;
+					const lineHeight = Number.isFinite(parsedLineHeight)
+						? parsedLineHeight
+						: fallbackLineHeight;
+
+					if (memberName.scrollHeight > lineHeight + 1) {
+						memberName.style.fontSize = "36px";
+					} else {
+						memberName.style.fontSize = "";
+					}
+
 					memberRole.textContent = member.role;
 					memberJoined.textContent = member.joined;
 					memberWork.textContent = member.work;
 
 					const messageText = memberMessage.querySelector("span");
 					messageText.textContent = member.message;
+
+					if (member.message.length > 60) {
+						memberMessage.style.fontSize = "20px";
+					} else {
+						memberMessage.style.fontSize = "";
+					}
+
 					document.title = `${member.name} - 球队成员介绍海报`;
 				}
-
-				const batchExportPosters = window.createPosterBatchExporter({
-					members,
-					memberSelect,
-					memberPhoto,
-					poster,
-					batchExportBtn,
-					renderMember,
-				});
 
 				members.forEach((member, index) => {
 					const option = document.createElement("option");
