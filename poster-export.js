@@ -83,4 +83,6 @@
 	}
 
 	window.createPosterBatchExporter = createPosterBatchExporter;
+	window.exportCurrentPoster = exportCurrentPoster;
+	window.sanitizeFileName = sanitizeFileName;
 })();

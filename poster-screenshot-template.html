@@ -309,6 +309,7 @@
 		<div class="controls" aria-label="Member switcher">
 			<label for="memberSelect">选择成员</label>
 			<select id="memberSelect"></select>
+			<button id="singleExportBtn" type="button">导出 PNG</button>
 			<button id="batchExportBtn" type="button">批量导出 PNG</button>
 		</div>
 
@@ -390,6 +391,7 @@
 				const memberWork = document.getElementById("memberWork");
 				const memberMessage = document.getElementById("memberMessage");
 				const poster = document.getElementById("poster");
+				const singleExportBtn = document.getElementById("singleExportBtn");
 				const batchExportBtn = document.getElementById("batchExportBtn");
 
 				function setMemberNameWithLineSplit(name) {
@@ -451,10 +453,27 @@
 					memberSelect.appendChild(option);
 				});
 
+				async function exportSinglePoster() {
+					const currentIndex = Number(memberSelect.value);
+					const currentMember = members[currentIndex];
+					const fileName = `${String(currentIndex + 1).padStart(2, "0")}-${window.sanitizeFileName(currentMember.name)}.png`;
+
+					singleExportBtn.disabled = true;
+					const originalText = singleExportBtn.textContent;
+
+					try {
+						await window.exportCurrentPoster(poster, fileName);
+					} finally {
+						singleExportBtn.textContent = originalText;
+						singleExportBtn.disabled = false;
+					}
+				}
+
 				memberSelect.addEventListener("change", () => {
 					renderMember(members[Number(memberSelect.value)]);
 				});
 
+				singleExportBtn.addEventListener("click", exportSinglePoster);
 				batchExportBtn.addEventListener("click", batchExportPosters);
 
 				memberSelect.value = "0";
