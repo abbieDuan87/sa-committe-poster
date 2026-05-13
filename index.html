@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<title>球队成员介绍海报</title>
+
+		<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+		<style>
+			body {
+				margin: 0;
+				background: #fff6de;
+				font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
+				display: flex;
+				justify-content: center;
+				padding: 40px;
+			}
+
+			.export-btn {
+				position: fixed;
+				top: 24px;
+				right: 24px;
+				z-index: 10;
+				border: none;
+				background: #f48f68;
+				color: white;
+				padding: 14px 22px;
+				border-radius: 999px;
+				font-size: 18px;
+				font-weight: bold;
+				cursor: pointer;
+				box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+			}
+
+			.poster {
+				width: 900px;
+				height: 1200px;
+				background: #fff6de;
+				border-radius: 42px;
+				padding: 54px;
+				box-sizing: border-box;
+				position: relative;
+				overflow: hidden;
+				color: #2b2b2b;
+				border: 8px solid #8bdfdd;
+			}
+
+			.blob {
+				position: absolute;
+				border-radius: 999px;
+				opacity: 0.8;
+				z-index: 0;
+			}
+
+			.blob.one {
+				width: 220px;
+				height: 220px;
+				background: #ffe394;
+				right: -60px;
+				top: 80px;
+			}
+
+			.blob.two {
+				width: 180px;
+				height: 180px;
+				background: #8bdfdd;
+				left: -50px;
+				bottom: 180px;
+			}
+
+			.inner {
+				position: relative;
+				z-index: 1;
+				padding-bottom: 200px;
+			}
+
+			.club {
+				display: inline-block;
+				background: #8bdfdd;
+				padding: 10px 20px;
+				border-radius: 20px;
+				font-size: 26px;
+				font-weight: 850;
+				margin-bottom: 20px;
+			}
+
+			h1 {
+				margin: 0;
+				font-size: 60px;
+				line-height: 1.08;
+				font-weight: 900;
+			}
+
+			h1 span {
+				color: #f48f68;
+			}
+
+			.subtitle {
+				margin-top: 14px;
+				font-size: 32px;
+				font-weight: 900;
+				color: #f48f68;
+			}
+
+			.content {
+				display: grid;
+				grid-template-columns: 380px 1fr;
+				gap: 36px;
+				margin-top: 66px;
+				align-items: center;
+			}
+
+			.photo-card {
+				background: white;
+				border: 5px solid #ffe394;
+				border-radius: 34px;
+				transform: rotate(-2deg);
+				box-sizing: border-box;
+				max-width: 100%;
+				box-shadow: 10px 14px 0 #f48f68;
+			}
+
+			.photo-card img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 24px;
+				display: block;
+			}
+
+			.name {
+				text-align: center;
+				margin-top: 20px;
+				font-size: 58px;
+				font-weight: 900;
+				color: #f48f68;
+			}
+
+			.info {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				margin-top: 8px;
+			}
+
+			.item {
+				background: white;
+				border: 4px solid #8bdfdd;
+				border-radius: 26px;
+				padding: 14px 20px;
+				box-shadow: 6px 6px 0 #ffe394;
+			}
+
+			.label {
+				display: inline-block;
+				background: #ffe394;
+				padding: 6px 14px;
+				border-radius: 999px;
+				font-size: 18px;
+				font-weight: 900;
+				margin-bottom: 12px;
+			}
+
+			.value {
+				font-size: 26px;
+				font-weight: 900;
+				line-height: 1.35;
+			}
+
+			.message {
+				background: #f48f68;
+				color: white;
+				border-radius: 28px;
+				padding: 24px;
+				font-size: 30px;
+				font-weight: 900;
+				text-align: center;
+				box-shadow: 7px 7px 0 #8bdfdd;
+			}
+
+			.doodle {
+				position: absolute;
+				font-size: 46px;
+				z-index: 2;
+			}
+
+			.ball {
+				right: 70px;
+				top: 230px;
+			}
+			.star {
+				left: 70px;
+				top: 300px;
+			}
+			.heart {
+				right: 80px;
+				bottom: 170px;
+			}
+			.spark {
+				left: 390px;
+				bottom: 155px;
+			}
+
+			.footer {
+				position: absolute;
+				left: 50%;
+				bottom: 38px;
+				transform: translateX(-50%);
+				height: 54px;
+				background: #8bdfdd;
+				border-radius: 999px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 14px;
+				padding: 0 24px;
+				box-sizing: border-box;
+				font-size: 18px;
+				font-weight: 900;
+				color: #2b2b2b;
+				box-shadow: 6px 6px 0 #f48f68;
+			}
+
+			.footer-dots {
+				display: flex;
+				gap: 8px;
+			}
+
+			.footer-dots span {
+				width: 8px;
+				height: 8px;
+				border-radius: 999px;
+				background: #f48f68;
+			}
+		</style>
+	</head>
+
+	<body>
+		<button class="export-btn" onclick="exportPNG()">导出 PNG</button>
+
+		<div class="poster" id="poster">
+			<div class="blob one"></div>
+			<div class="blob two"></div>
+
+			<div class="inner">
+				<div class="club">伦敦 Screamer 女足俱乐部</div>
+
+				<h1>
+					认识我们的<br />
+					<span>委员会成员</span>
+				</h1>
+
+				<div class="content">
+					<div class="photo-card">
+						<img src="photos/abbie.jpg" alt="Abbie" />
+						<div class="name">Abbie</div>
+					</div>
+
+					<div class="info">
+						<div class="item">
+							<div class="label">职位</div>
+							<div class="value">临时主席</div>
+						</div>
+
+						<div class="item">
+							<div class="label">何时加入球队</div>
+							<div class="value">2024年2月</div>
+						</div>
+
+						<div class="item">
+							<div class="label">正在做的事</div>
+							<div class="value">创意内容和运营执行</div>
+						</div>
+
+						<div>
+							<div class="label">想说的话</div>
+							<div class="message">只看女足</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<span>SCREAM LOUD, PLAY PROUD</span>
+			</div>
+		</div>
+
+		<script>
+			function exportPNG() {
+				const poster = document.getElementById("poster");
+				const exportPadding = 28;
+
+				html2canvas(poster, {
+					scale: 2,
+					useCORS: true,
+					backgroundColor: null,
+					onclone: (clonedDocument) => {
+						const clonedPoster = clonedDocument.getElementById("poster");
+
+						if (clonedPoster) {
+							clonedPoster.style.boxSizing = "content-box";
+							clonedPoster.style.overflow = "visible";
+							clonedPoster.style.padding = `${54 + exportPadding}px`;
+						}
+					},
+				}).then((canvas) => {
+					const link = document.createElement("a");
+					link.download = "committee-member-poster.png";
+					link.href = canvas.toDataURL("image/png");
+					link.click();
+				});
+			}
+		</script>
+	</body>
+</html>

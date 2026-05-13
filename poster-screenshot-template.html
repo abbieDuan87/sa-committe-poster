@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<title>球队成员介绍海报 - Screenshot Template</title>
+
+		<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+		<style>
+			body {
+				margin: 0;
+				background: #fff6de;
+				font-family: "Arial Rounded MT Bold", "Microsoft YaHei", sans-serif;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: 40px;
+			}
+
+			.controls {
+				position: fixed;
+				top: 24px;
+				left: 24px;
+				z-index: 20;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				background: rgba(255, 246, 222, 0.95);
+				border: 2px solid #8bdfdd;
+				border-radius: 999px;
+				padding: 12px 16px;
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+			}
+
+			.controls label {
+				font-size: 18px;
+				font-weight: 900;
+				color: #2b2b2b;
+			}
+
+			.controls select {
+				border: 2px solid #f48f68;
+				border-radius: 999px;
+				padding: 8px 14px;
+				font: inherit;
+				background: white;
+				color: #2b2b2b;
+			}
+
+			.controls button {
+				border: 2px solid #f48f68;
+				border-radius: 999px;
+				padding: 8px 14px;
+				font: inherit;
+				font-weight: 900;
+				background: #f48f68;
+				color: white;
+				cursor: pointer;
+			}
+
+			.controls button:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+			}
+
+			@media print {
+				.controls {
+					display: none;
+				}
+			}
+
+			.poster {
+				width: 900px;
+				height: 1200px;
+				background: #fff6de;
+				border-radius: 42px;
+				padding: 54px;
+				box-sizing: border-box;
+				position: relative;
+				overflow: hidden;
+				color: #2b2b2b;
+				border: 8px solid #8bdfdd;
+			}
+
+			.blob {
+				position: absolute;
+				border-radius: 999px;
+				opacity: 0.8;
+				z-index: 0;
+			}
+
+			.blob.one {
+				width: 220px;
+				height: 220px;
+				background: #ffe394;
+				right: -60px;
+				top: 80px;
+			}
+
+			.blob.two {
+				width: 180px;
+				height: 180px;
+				background: #8bdfdd;
+				left: -50px;
+				bottom: 180px;
+			}
+
+			.inner {
+				position: relative;
+				z-index: 1;
+				padding-bottom: 200px;
+			}
+
+			.club {
+				display: inline-block;
+				background: #8bdfdd;
+				padding: 10px 20px;
+				border-radius: 20px;
+				font-size: 26px;
+				font-weight: 850;
+				margin-bottom: 20px;
+			}
+
+			h1 {
+				margin: 0;
+				font-size: 60px;
+				line-height: 1.08;
+				font-weight: 900;
+			}
+
+			h1 span {
+				color: #f48f68;
+			}
+
+			.content {
+				display: grid;
+				grid-template-columns: 380px 1fr;
+				gap: 36px;
+				margin-top: 66px;
+				align-items: center;
+			}
+
+			.photo-card-wrap {
+				position: relative;
+				transform: rotate(-2deg);
+				max-width: 100%;
+			}
+
+			.photo-card {
+				position: relative;
+				z-index: 1;
+				background: white;
+				border: 5px solid #ffe394;
+				border-radius: 34px;
+				box-sizing: border-box;
+			}
+
+			.photo-card-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(10px, 14px);
+				background: #f48f68;
+				border-radius: 34px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.item-wrap {
+				position: relative;
+			}
+
+			.item {
+				position: relative;
+				z-index: 1;
+				background: white;
+				border: 4px solid #8bdfdd;
+				border-radius: 26px;
+				padding: 14px 20px;
+			}
+
+			.item-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(6px, 6px);
+				background: #ffe394;
+				border-radius: 26px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.item > * {
+				position: relative;
+				z-index: 1;
+			}
+
+			.message-wrap {
+				position: relative;
+			}
+
+			.message {
+				position: relative;
+				z-index: 1;
+				background: #f48f68;
+				color: white;
+				border-radius: 28px;
+				padding: 24px;
+				font-size: 30px;
+				font-weight: 900;
+				text-align: center;
+			}
+
+			.message-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(7px, 7px);
+				background: #8bdfdd;
+				border-radius: 28px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.message > * {
+				position: relative;
+				z-index: 1;
+			}
+
+			.footer-wrap {
+				position: absolute;
+				left: 50%;
+				bottom: 38px;
+				transform: translateX(-50%);
+				z-index: 0;
+			}
+
+			.footer {
+				position: relative;
+				z-index: 1;
+				height: 54px;
+				background: #8bdfdd;
+				border-radius: 999px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 14px;
+				padding: 0 24px;
+				box-sizing: border-box;
+				font-size: 18px;
+				font-weight: 900;
+				color: #2b2b2b;
+			}
+
+			.footer-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(6px, 6px);
+				background: #f48f68;
+				border-radius: 999px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.footer > * {
+				position: relative;
+				z-index: 1;
+			}
+
+			.photo-card img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 24px;
+				display: block;
+			}
+
+			.name {
+				text-align: center;
+				margin-top: 20px;
+				font-size: 48px;
+				font-weight: 900;
+				color: #f48f68;
+			}
+
+			.info {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				margin-top: 8px;
+			}
+
+			.label {
+				display: inline-block;
+				background: #ffe394;
+				padding: 6px 14px;
+				border-radius: 999px;
+				font-size: 18px;
+				font-weight: 900;
+				margin-bottom: 12px;
+			}
+
+			.value {
+				font-size: 26px;
+				font-weight: 900;
+				line-height: 1.35;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="controls" aria-label="Member switcher">
+			<label for="memberSelect">选择成员</label>
+			<select id="memberSelect"></select>
+			<button id="batchExportBtn" type="button">批量导出 PNG</button>
+		</div>
+
+		<div class="poster" id="poster">
+			<div class="blob one"></div>
+			<div class="blob two"></div>
+
+			<div class="inner">
+				<div class="club">伦敦 Screamer 女足俱乐部</div>
+
+				<h1>
+					认识我们的<br />
+					<span>委员会成员</span>
+				</h1>
+
+				<div class="content">
+					<div class="photo-card-wrap">
+						<div class="shadow-layer" aria-hidden="true"></div>
+						<div class="photo-card">
+							<img id="memberPhoto" src="photos/abbie.jpg" alt="Abbie" />
+							<div class="name" id="memberName">Abbie</div>
+						</div>
+					</div>
+
+					<div class="info">
+						<div class="item-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="item">
+								<div class="label">职位</div>
+								<div class="value" id="memberRole">临时主席</div>
+							</div>
+						</div>
+
+						<div class="item-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="item">
+								<div class="label">何时加入球队</div>
+								<div class="value" id="memberJoined">2024年2月</div>
+							</div>
+						</div>
+
+						<div class="item-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="item">
+								<div class="label">正在做的事</div>
+								<div class="value" id="memberWork">创意内容和运营执行</div>
+							</div>
+						</div>
+
+						<div>
+							<div class="label">想说的话</div>
+							<div class="message-wrap">
+								<div class="shadow-layer" aria-hidden="true"></div>
+								<div class="message" id="memberMessage">
+									<span>只看女足</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer-wrap">
+				<div class="shadow-layer" aria-hidden="true"></div>
+				<div class="footer">
+					<span>SCREAM LOUD, PLAY PROUD</span>
+				</div>
+			</div>
+
+			<script src="members.js"></script>
+			<script>
+				const members = window.MEMBERS || [];
+				const memberSelect = document.getElementById("memberSelect");
+				const memberPhoto = document.getElementById("memberPhoto");
+				const memberName = document.getElementById("memberName");
+				const memberRole = document.getElementById("memberRole");
+				const memberJoined = document.getElementById("memberJoined");
+				const memberWork = document.getElementById("memberWork");
+				const memberMessage = document.getElementById("memberMessage");
+				const poster = document.getElementById("poster");
+				const batchExportBtn = document.getElementById("batchExportBtn");
+
+				function renderMember(member) {
+					memberPhoto.src = member.photo;
+					memberPhoto.alt = member.name;
+					memberName.textContent = member.name;
+					memberRole.textContent = member.role;
+					memberJoined.textContent = member.joined;
+					memberWork.textContent = member.work;
+					const messageText = memberMessage.querySelector("span");
+					messageText.textContent = member.message;
+					document.title = `${member.name} - 球队成员介绍海报`;
+				}
+
+				function sanitizeFileName(name) {
+					return name.replace(/[\\\\/:*?"<>|]/g, "-").trim();
+				}
+
+				function waitForImageLoaded(imageElement) {
+					return new Promise((resolve) => {
+						if (imageElement.complete && imageElement.naturalWidth > 0) {
+							resolve();
+							return;
+						}
+
+						const done = () => {
+							imageElement.removeEventListener("load", done);
+							imageElement.removeEventListener("error", done);
+							resolve();
+						};
+
+						imageElement.addEventListener("load", done, { once: true });
+						imageElement.addEventListener("error", done, { once: true });
+					});
+				}
+
+				function nextFrame() {
+					return new Promise((resolve) => requestAnimationFrame(resolve));
+				}
+
+				async function exportCurrentPoster(fileName) {
+					const canvas = await html2canvas(poster, {
+						backgroundColor: null,
+						scale: 2,
+						useCORS: true,
+					});
+
+					const link = document.createElement("a");
+					link.href = canvas.toDataURL("image/png");
+					link.download = fileName;
+					link.click();
+				}
+
+				async function batchExportPosters() {
+					if (typeof html2canvas !== "function") {
+						alert("html2canvas 未加载，无法导出。");
+						return;
+					}
+
+					batchExportBtn.disabled = true;
+					const originalText = batchExportBtn.textContent;
+					const originalIndex = Number(memberSelect.value);
+
+					try {
+						for (let i = 0; i < members.length; i += 1) {
+							const member = members[i];
+							memberSelect.value = String(i);
+							renderMember(member);
+
+							batchExportBtn.textContent = `导出中 ${i + 1}/${members.length}`;
+
+							await waitForImageLoaded(memberPhoto);
+							await nextFrame();
+							await nextFrame();
+
+							const fileName = `${String(i + 1).padStart(2, "0")}-${sanitizeFileName(member.name)}.png`;
+							await exportCurrentPoster(fileName);
+						}
+					} finally {
+						memberSelect.value = String(originalIndex);
+						renderMember(members[originalIndex]);
+						batchExportBtn.textContent = originalText;
+						batchExportBtn.disabled = false;
+					}
+				}
+
+				members.forEach((member, index) => {
+					const option = document.createElement("option");
+					option.value = String(index);
+					option.textContent = `${index + 1}. ${member.name}`;
+					memberSelect.appendChild(option);
+				});
+
+				memberSelect.addEventListener("change", () => {
+					renderMember(members[Number(memberSelect.value)]);
+				});
+
+				batchExportBtn.addEventListener("click", batchExportPosters);
+
+				memberSelect.value = "0";
+				renderMember(members[0]);
+			</script>
+		</div>
+	</body>
+</html>
