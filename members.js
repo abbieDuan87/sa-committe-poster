@@ -32,7 +32,7 @@ window.MEMBERS = [
 		message: "我的理想型是 Hello Kitty",
 	},
 	{
-		name: "Jennie/宝宝龙",
+		name: "Jennie 宝宝龙",
 		photo: "photos/jennie.PNG",
 		role: "宣传部长",
 		joined: "2024年12月",
