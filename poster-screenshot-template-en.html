@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Committee Member Posters - Screenshot Template</title>
+
+		<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			body {
+				margin: 0;
+				background: #fff6de;
+				font-family: "Inter", "Microsoft YaHei", sans-serif;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: 40px;
+			}
+
+			.controls {
+				position: fixed;
+				top: 24px;
+				right: 24px;
+				z-index: 20;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				background: rgba(255, 246, 222, 0.95);
+				border: 2px solid #8bdfdd;
+				border-radius: 999px;
+				padding: 12px 16px;
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+			}
+
+			.controls label {
+				font-size: 18px;
+				font-weight: 700;
+				color: #2b2b2b;
+			}
+
+			.controls select {
+				border: 2px solid #f48f68;
+				border-radius: 999px;
+				padding: 8px 14px;
+				font: inherit;
+				background: white;
+				color: #2b2b2b;
+			}
+
+			.controls button {
+				border: 2px solid #f48f68;
+				border-radius: 999px;
+				padding: 8px 14px;
+				font: inherit;
+				font-weight: 700;
+				background: #f48f68;
+				color: white;
+				cursor: pointer;
+			}
+
+			.controls button:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+			}
+
+			@media print {
+				.controls {
+					display: none;
+				}
+			}
+
+			.poster {
+				width: 900px;
+				height: 1200px;
+				background: #fff6de;
+				border-radius: 42px;
+				padding: 54px;
+				box-sizing: border-box;
+				position: relative;
+				overflow: hidden;
+				color: #2b2b2b;
+				border: 8px solid #8bdfdd;
+			}
+
+			.blob {
+				position: absolute;
+				border-radius: 999px;
+				opacity: 0.8;
+				z-index: 0;
+			}
+
+			.blob.one {
+				width: 220px;
+				height: 220px;
+				background: #ffe394;
+				right: -60px;
+				top: 80px;
+			}
+
+			.blob.two {
+				width: 180px;
+				height: 180px;
+				background: #8bdfdd;
+				left: -50px;
+				bottom: 180px;
+			}
+
+			.inner {
+				position: relative;
+				z-index: 1;
+				padding-bottom: 200px;
+			}
+
+			.club {
+				display: inline-block;
+				background: #8bdfdd;
+				padding: 10px 20px;
+				border-radius: 20px;
+				font-size: 26px;
+				font-weight: 700;
+				margin-bottom: 20px;
+			}
+
+			h1 {
+				margin: 0;
+				font-size: 60px;
+				line-height: 1.08;
+				font-weight: 800;
+				font-family: "Playfair Display", serif;
+			}
+
+			h1 span {
+				color: #f48f68;
+			}
+
+			.content {
+				display: grid;
+				grid-template-columns: 380px 1fr;
+				gap: 36px;
+				margin-top: 66px;
+				align-items: center;
+			}
+
+			.content-message {
+				grid-column: 1 / -1;
+				margin-top: 24px;
+			}
+
+			.photo-card-wrap {
+				position: relative;
+				transform: rotate(-2deg);
+				max-width: 100%;
+			}
+
+			.photo-card {
+				position: relative;
+				z-index: 1;
+				background: white;
+				border: 5px solid #ffe394;
+				border-radius: 34px;
+				box-sizing: border-box;
+			}
+
+			.photo-card-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(10px, 14px);
+				background: #f48f68;
+				border-radius: 34px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.item-wrap {
+				position: relative;
+			}
+
+			.item {
+				position: relative;
+				z-index: 1;
+				background: white;
+				border: 4px solid #8bdfdd;
+				border-radius: 26px;
+				padding: 14px 20px;
+			}
+
+			.item-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(6px, 6px);
+				background: #ffe394;
+				border-radius: 26px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.item > * {
+				position: relative;
+				z-index: 1;
+			}
+
+			.message-wrap {
+				position: relative;
+			}
+
+			.message {
+				position: relative;
+				z-index: 1;
+				background: #f48f68;
+				color: white;
+				border-radius: 28px;
+				padding: 24px;
+				font-size: 30px;
+				font-weight: 700;
+				text-align: center;
+			}
+
+			.message-wrap .shadow-layer {
+				position: absolute;
+				inset: 0;
+				transform: translate(7px, 7px);
+				background: #8bdfdd;
+				border-radius: 28px;
+				z-index: 0;
+				pointer-events: none;
+			}
+
+			.message > * {
+				position: relative;
+				z-index: 1;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 4;
+				overflow: hidden;
+				line-height: 1.35;
+				word-break: break-word;
+			}
+
+			.photo-card img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 24px;
+				display: block;
+			}
+
+			.name {
+				text-align: center;
+				margin-top: 12px;
+				font-size: 48px;
+				font-weight: 800;
+				color: #f48f68;
+			}
+
+			.info {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				margin-top: 0px;
+			}
+
+			.label {
+				display: inline-block;
+				background: #ffe394;
+				padding: 6px 14px;
+				border-radius: 999px;
+				font-size: 24px;
+				font-weight: 700;
+				margin-bottom: 12px;
+			}
+
+			.value {
+				font-size: 26px;
+				font-weight: 600;
+				line-height: 1.35;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="controls" aria-label="Member switcher">
+			<label for="memberSelect">Select Member</label>
+			<select id="memberSelect"></select>
+			<button id="singleExportBtn" type="button">Export PNG</button>
+			<button id="batchExportBtn" type="button">Batch Export PNG</button>
+		</div>
+
+		<div class="poster" id="poster">
+			<div class="blob one"></div>
+			<div class="blob two"></div>
+
+			<div class="inner">
+				<div class="club">London Screamer FC</div>
+
+				<h1>
+					Meet Our<br />
+					<span>Committee Members</span>
+				</h1>
+
+				<div class="content">
+					<div class="photo-card-wrap">
+						<div class="shadow-layer" aria-hidden="true"></div>
+						<div class="photo-card">
+							<img id="memberPhoto" src="photos/abbie.jpg" alt="Abbie" />
+							<div class="name" id="memberName">Abbie</div>
+						</div>
+					</div>
+
+					<div class="info">
+						<div class="item-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="item">
+								<div class="label">Role</div>
+								<div class="value" id="memberRole">Interim Chair</div>
+							</div>
+						</div>
+
+						<div class="item-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="item">
+								<div class="label">Joined</div>
+								<div class="value" id="memberJoined">February 2024</div>
+							</div>
+						</div>
+
+						<div class="item-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="item">
+								<div class="label">What I Do</div>
+								<div class="value" id="memberWork">
+									I help run the club's social media, content creation,
+									branding, and day-to-day operations.
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="content-message">
+						<div class="label">Want to Say</div>
+						<div class="message-wrap">
+							<div class="shadow-layer" aria-hidden="true"></div>
+							<div class="message" id="memberMessage">
+								<span
+									>My dog is named Sausage Bun because I lured him home with a
+									sausage bun.</span
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script src="members-en.js"></script>
+			<script src="poster-export.js"></script>
+			<script>
+				const members = window.MEMBERS || [];
+				const memberSelect = document.getElementById("memberSelect");
+				const memberPhoto = document.getElementById("memberPhoto");
+				const memberName = document.getElementById("memberName");
+				const memberRole = document.getElementById("memberRole");
+				const memberJoined = document.getElementById("memberJoined");
+				const memberWork = document.getElementById("memberWork");
+				const memberMessage = document.getElementById("memberMessage");
+				const poster = document.getElementById("poster");
+				const singleExportBtn = document.getElementById("singleExportBtn");
+				const batchExportBtn = document.getElementById("batchExportBtn");
+
+				function setMemberNameWithLineSplit(name) {
+					memberName.textContent = name;
+
+					const style = window.getComputedStyle(memberName);
+					const parsedLineHeight = Number.parseFloat(style.lineHeight);
+					const fallbackLineHeight = Number.parseFloat(style.fontSize) * 1.2;
+					const lineHeight = Number.isFinite(parsedLineHeight)
+						? parsedLineHeight
+						: fallbackLineHeight;
+
+					if (memberName.scrollHeight <= lineHeight + 1) {
+						return;
+					}
+
+					const match = name
+						.trim()
+						.match(
+							/^([A-Za-z][A-Za-z\s.'-]*?)\s+([\u3400-\u9FFF][\u3400-\u9FFF\w\s·-]*)$/,
+						);
+
+					if (!match) {
+						return;
+					}
+
+					memberName.textContent = "";
+					memberName.append(document.createTextNode(match[1].trim()));
+					memberName.append(document.createElement("br"));
+					memberName.append(document.createTextNode(match[2].trim()));
+				}
+
+				function renderMember(member) {
+					memberPhoto.src = member.photo;
+					memberPhoto.alt = member.name;
+					setMemberNameWithLineSplit(member.name);
+
+					const style = window.getComputedStyle(memberName);
+					const parsedLineHeight = Number.parseFloat(style.lineHeight);
+					const fallbackLineHeight = Number.parseFloat(style.fontSize) * 1.2;
+					const lineHeight = Number.isFinite(parsedLineHeight)
+						? parsedLineHeight
+						: fallbackLineHeight;
+
+					if (memberName.scrollHeight > lineHeight + 1) {
+						memberName.style.fontSize = "36px";
+					} else {
+						memberName.style.fontSize = "";
+					}
+
+					memberRole.textContent = member.role;
+					memberJoined.textContent = member.joined;
+					memberWork.textContent = member.work;
+
+					const messageText = memberMessage.querySelector("span");
+					messageText.textContent = member.message;
+
+					document.title = `${member.name} - Committee Member Poster`;
+				}
+
+				members.forEach((member, index) => {
+					const option = document.createElement("option");
+					option.value = String(index);
+					option.textContent = `${index + 1}. ${member.name}`;
+					memberSelect.appendChild(option);
+				});
+
+				const batchExportPosters = window.createPosterBatchExporter({
+					members,
+					memberSelect,
+					memberPhoto,
+					poster,
+					batchExportBtn,
+					renderMember,
+				});
+
+				async function exportSinglePoster() {
+					const currentIndex = Number(memberSelect.value);
+					const currentMember = members[currentIndex];
+					const fileName = `${String(currentIndex + 1).padStart(2, "0")}-${window.sanitizeFileName(currentMember.name)}.png`;
+
+					singleExportBtn.disabled = true;
+					const originalText = singleExportBtn.textContent;
+
+					try {
+						await window.exportCurrentPoster(poster, fileName);
+					} finally {
+						singleExportBtn.textContent = originalText;
+						singleExportBtn.disabled = false;
+					}
+				}
+
+				memberSelect.addEventListener("change", () => {
+					renderMember(members[Number(memberSelect.value)]);
+				});
+
+				singleExportBtn.addEventListener("click", exportSinglePoster);
+				batchExportBtn.addEventListener("click", batchExportPosters);
+
+				memberSelect.value = "0";
+				renderMember(members[0]);
+			</script>
+		</div>
+	</body>
+</html>

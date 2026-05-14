@@ -35,7 +35,7 @@ window.MEMBERS = [
 		name: "Jennie 宝宝龙",
 		photo: "photos/jennie.PNG",
 		role: "宣传部长",
-		joined: "2024年12月",
+		joined: "2025年12月",
 		work: "拍照片、剪视频、发视频，每日活着中",
 		message: "这是史上最萌的想说什么",
 	},
