@@ -338,7 +338,7 @@
 			</div>
 
 			<script src="members.js"></script>
-			<script src="poster-export.js"></script>
+			<script src="poster-export.js?v=20260707"></script>
 			<script>
 				const members = window.MEMBERS || [];
 				const memberSelect = document.getElementById("memberSelect");
@@ -383,7 +383,13 @@
 				}
 
 				function renderMember(member) {
-					memberPhoto.src = member.photo;
+					if (member.photo) {
+						memberPhoto.src = member.photo;
+						memberPhoto.style.visibility = "visible";
+					} else {
+						memberPhoto.removeAttribute("src");
+						memberPhoto.style.visibility = "hidden";
+					}
 					memberPhoto.alt = member.name;
 					setMemberNameWithLineSplit(member.name);
 

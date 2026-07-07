@@ -25,17 +25,56 @@
 		return new Promise((resolve) => requestAnimationFrame(resolve));
 	}
 
-	async function exportCurrentPoster(poster, fileName) {
-		const canvas = await html2canvas(poster, {
-			backgroundColor: null,
-			scale: 2,
-			useCORS: true,
-		});
+	function createExportFrame(poster) {
+		const posterRect = poster.getBoundingClientRect();
+		const frameWidth = Math.round(posterRect.width);
+		const frameHeight = Math.round((frameWidth * 297) / 210);
+		const verticalPadding = Math.max(
+			0,
+			Math.round((frameHeight - posterRect.height) / 2),
+		);
 
-		const link = document.createElement("a");
-		link.href = canvas.toDataURL("image/png");
-		link.download = fileName;
-		link.click();
+		const frame = document.createElement("div");
+		frame.style.position = "fixed";
+		frame.style.left = "0";
+		frame.style.top = "0";
+		frame.style.width = `${frameWidth}px`;
+		frame.style.height = `${frameHeight}px`;
+		frame.style.display = "flex";
+		frame.style.alignItems = "center";
+		frame.style.justifyContent = "center";
+		frame.style.padding = `${verticalPadding}px 0`;
+		frame.style.boxSizing = "border-box";
+		frame.style.background =
+			getComputedStyle(poster).backgroundColor || "#fff6de";
+		frame.style.pointerEvents = "none";
+		frame.style.zIndex = "-1";
+		frame.style.transform = "translate(-100000px, 0)";
+
+		const posterClone = poster.cloneNode(true);
+		frame.appendChild(posterClone);
+		document.body.appendChild(frame);
+
+		return frame;
+	}
+
+	async function exportCurrentPoster(poster, fileName) {
+		const frame = createExportFrame(poster);
+
+		try {
+			const canvas = await html2canvas(frame, {
+				backgroundColor: null,
+				scale: 2,
+				useCORS: true,
+			});
+
+			const link = document.createElement("a");
+			link.href = canvas.toDataURL("image/png");
+			link.download = fileName;
+			link.click();
+		} finally {
+			frame.remove();
+		}
 	}
 
 	function createPosterBatchExporter(options) {
